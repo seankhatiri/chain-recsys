@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "alchemy-sdk": "^2.9.2",
+    "csv-parser": "^3.0.0",
+    "fs": "^0.0.1-security",
+    "tqdm": "^2.0.3"
+  }
+}
