@@ -3,3 +3,4 @@
 /node_modules
 /backup_data
 *.csv
+/temp_tx

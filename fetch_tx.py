@@ -95,7 +95,7 @@ def main():
     # Read addresses from remaining_eoa_addresses.csv
     # and append only those that haven't been processed yet
     addresses = []
-    with open('dataset/new_remaining_eoa_addresses.csv', 'r') as file:
+    with open('dataset/latest_remaining_eoa_addresses.csv', 'r') as file:
         reader = csv.DictReader(file)
         for row in reader:
             address = row['address']
