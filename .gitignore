@@ -4,3 +4,4 @@
 /backup_data
 *.csv
 /temp_tx
+/contract_parser
