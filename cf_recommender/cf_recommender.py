@@ -14,15 +14,15 @@ data = Dataset.load_from_df(data[['user', 'item', 'rating']], reader)
 
 
 ################# SVD CF #####################
-# algo = SVD()
-# print('cf started')
-# cross_validate(algo, data, measures=['RMSE', 'MAE'], cv=5, verbose=True)
+algo = SVD()
+print('cf started')
+cross_validate(algo, data, measures=['RMSE', 'MAE'], cv=5, verbose=True)
 
 ################# KNN CF #####################
-sim_options = {
-    'name': 'cosine',
-    'user_based': True
-}
-algo = KNNBasic(sim_options=sim_options)
-cross_validate(algo, data, measures=['RMSE', 'MAE'], cv=5, verbose=True)
+# sim_options = {
+#     'name': 'cosine',
+#     'user_based': True
+# }
+# algo = KNNBasic(sim_options=sim_options)
+# cross_validate(algo, data, measures=['RMSE', 'MAE'], cv=5, verbose=True)
 
