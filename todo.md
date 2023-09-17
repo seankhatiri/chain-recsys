@@ -28,8 +28,6 @@
 Considering the below recommender, based on user-contractinteractions dataset, we define the concept aof being relevant as follows: the intersection among our top-k recommendations among item set with all user-contract true interactions. The reason that we don't just consider the top-k user interactions is the fact that in transaction context any interactio with a contract will be accepted as a sign that user is interested to the contract. In other words, unlike movielens dataset that users rate to each movie and they can dislike a movie, in our context each interaction is a strong sign of being interested.
 Popular contract recommender results:
 old version
-k=1
-
 K=5
 Average Precision: 0.1418240614893758
 Average Recall: 0.2610141225726914
@@ -44,6 +42,16 @@ Average Precision: 0.11067746168629868
 Average Recall: 0.44381573135649094
 
 new version Popular contract recommender results:
+For len(user_item_interactions) = 10K
+MAP @ 1: 0.2236842105263158
+MAP @ 20: 0.21588790670502636
+MAP @ 10: 0.20795416962268984
+MAP @ 5: 0.21625073099415143
+MAP @ 15: 0.2120367406216425
+
+For len(user_item_interactions) = 100K
+
+For len(user_item_interactions) = 400K
 MAP @ 1: 0.23065566855696676
 MAP @ 15: 0.20843115590375655
 MAP @ 5: 0.2133290046502658
@@ -52,3 +60,15 @@ MAP @ 10: 0.2062692781380868
 
 
 # TODO: definitly using surprise library and predicting for any two pair of user item dosn't make sense and is computationally inefficient, we need to desgin the latent matrixes and with one matrix multiplication calculate the final matrix, now given any i, j we have the predicted value weather i interacts with j or not.
+
+## Matrix Factorization
+For len(user_item_interactions) = 10K
+MAP @ 20: 0.2810518363529898
+MAP @ 1: 0.025606469002695417
+MAP @ 5: 0.0770440251572327
+MAP @ 10: 0.1533179309459633
+MAP @ 15: 0.22453364993796263
+
+For len(user_item_interactions) = 100K
+
+For len(user_item_interactions) = 400K

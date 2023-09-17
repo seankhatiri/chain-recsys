@@ -5,10 +5,13 @@ from surprise.model_selection import cross_validate
 from surprise.model_selection import cross_validate, KFold, train_test_split
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from tqdm import tqdm
+import pandas as pd
+import numpy as np
 
 ############# RUNNING BASELINE RECOMMENDERS ###############
 
 data = pd.read_parquet('dataset/user_contract_rating.parquet')
+# data = data[:100000]
 ###### DATA PREPROCESSING #######
 def apply_rating_scale(rating):
     if rating == 1:
@@ -108,7 +111,7 @@ print(trainset.n_users)
 model = SVD()
 model.fit(trainset)
 print('model fit Finished')
-K_values = [1]
+K_values = [1, 5, 10, 15, 20]
 
 with ThreadPoolExecutor() as executor:
     futures = {executor.submit(MAP_at_K_MF_batch, model=model, data=testset, K=k, batch_size=5): k for k in K_values}
