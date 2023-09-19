@@ -95,4 +95,22 @@ For len(user_topic_interactions) = 100K
 
 
 
-Note: we have 29k users with more than 50 k
+Note: we have 29k users with == 5o transactions in user transactions
+Note: There was a huge bug in popular contract recommender, when we say our prediction is the top-k popular contradct, actually the popular contract in trainset should be given, cuz we don't see the testset, so it's wrong to get the top-k popular contract in testset as prediction ://
+After Fixing the bug, Popular Contract Recommender
+For len(user-item-rating) = 100k
+MAP @ 1: 0.05108991825613079
+MAP @ 5: 0.07756893985265907
+MAP @ 10: 0.09126641274887184
+MAP @ 15: 0.09552536905142488
+MAP @ 20: 0.09744209517667898
+
+Contract Name MF Recommender V2:
+For len() = 10k
+MAP @ 1: 0.06540084388185655
+MAP @ 5: 0.12709798406000938
+MAP @ 10: 0.24006666778291255
+MAP @ 15: 0.3595615277049876
+MAP @ 20: 0.4797060051773822
+
+For len() = 100k (running on tmux cf_recommender_name_level)

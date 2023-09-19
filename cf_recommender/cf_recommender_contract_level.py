@@ -1,3 +1,4 @@
+# NOT UPDATED, UPDATE BASED ON CONTRACT MFR NOTEBOOK
 from surprise import KNNBasic # Not working on Apple silicon chip
 from surprise import Dataset, Reader, SVD, accuracy
 from surprise.model_selection import cross_validate, KFold, train_test_split
