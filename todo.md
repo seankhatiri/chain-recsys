@@ -62,6 +62,7 @@ MAP @ 10: 0.2062692781380868
 # TODO: definitly using surprise library and predicting for any two pair of user item dosn't make sense and is computationally inefficient, we need to desgin the latent matrixes and with one matrix multiplication calculate the final matrix, now given any i, j we have the predicted value weather i interacts with j or not.
 
 ## Matrix Factorization
+### Name Level
 For len(user_item_interactions) = 10K
 MAP @ 20: 0.2810518363529898
 MAP @ 1: 0.025606469002695417
@@ -70,5 +71,28 @@ MAP @ 10: 0.1533179309459633
 MAP @ 15: 0.22453364993796263
 
 For len(user_item_interactions) = 100K
+MAP @ 1: 0.006260671599317018
+MAP @ 5: 0.016703898690950486
+MAP @ 10: 0.04576288231517656
+MAP @ 15: 0.08634326142013071
+MAP @ 20: 0.1355948135331553
 
 For len(user_item_interactions) = 400K
+
+
+### Contract Level
+
+For LDA K=15 we have:
+For len(user_topic_interactions) = 10K
+MAP @ 1: 0.23585598824393827
+MAP @ 2: 0.33945628214548124
+MAP @ 3: 0.4867744305657605
+MAP @ 4: 0.6465833945628219
+MAP @ 5: 0.8082292432035263
+
+For len(user_topic_interactions) = 100K
+
+
+
+
+Note: we have 29k users with more than 50 k
