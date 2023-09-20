@@ -114,3 +114,22 @@ MAP @ 15: 0.3595615277049876
 MAP @ 20: 0.4797060051773822
 
 For len() = 100k (running on tmux cf_recommender_name_level)
+
+
+Contract Level MF Recommender V2:
+for len() = 50k
+r = 5
+MAP @ 1: 0.21908370651050638
+MAP @ 5: 0.10143730623492932
+MAP @ 10: 0.0877293908083895
+MAP @ 15: 0.09714189438531029
+MAP @ 20: 0.0949172668246906
+
+r = 1
+MAP @ 1: 0.21717877094972068
+MAP @ 5: 0.11288107153941647
+MAP @ 10: 0.0708795992791902
+MAP @ 15: 0.06331292729493819
+MAP @ 20: 0.06229326813653393
+
+Note: as we can see the MAP will reduce when k grows, this may be because of number of topic we had for LDA

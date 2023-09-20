@@ -52,7 +52,7 @@ data['rating'] = data['rating'].apply(apply_rating_scale)
 '''The average percision just tell us how relevant our recommendations are, 
     but dosn't tell us how good our ranking is
 '''
-def MAP_at_K_MF_batch(model=None, testset=None, trainset=None, K=None, batch_size=100, fullset=None):
+def MAP_at_K_MF_batch(model=None, testset=None, K=None, batch_size=100, fullset=None):
     total_map = 0.0
     count_users = 0
     
@@ -117,7 +117,7 @@ def MAP_at_K_MF_batch(model=None, testset=None, trainset=None, K=None, batch_siz
                     sum_precisions += precision_at_k
             average_precision = sum_precisions / min(len(testset_true_relevant), K)
             
-            # # MAP@K V2
+            # # MAP@K V2 # Not sure its correct or not
             # for k in range(1, K + 1):
             #     item_at_k = predicted_items[:K]
             #     if any(item in true_relevant for item in item_at_k): 
@@ -167,7 +167,7 @@ K_values = [1, 5, 10, 15, 20]
 # print(MAP_at_K_MF_batch(model=model, data=testset, K=10, batch_size=5, fullset=fullset))
 
 with ThreadPoolExecutor() as executor:
-    futures = {executor.submit(MAP_at_K_MF_batch, model=model, testset=testset, trainset=trainset, K=k, batch_size=5, fullset=fullset): k for k in K_values}
+    futures = {executor.submit(MAP_at_K_MF_batch, model=model, testset=testset, K=k, batch_size=5, fullset=fullset): k for k in K_values}
     for future in as_completed(futures):
         k = futures[future]
         # map_result = future.result()
