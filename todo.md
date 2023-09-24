@@ -10,19 +10,6 @@ MF and Popular Recs
 # TODO: For topic modeling run the coherent k approach to find the best K for the dataset
 # TODO: Note: we have 29k users with == 5o transactions in user transactions
 
-Graph
-# TODO: Train simple GCN given node_names (user address or contract_names) and edge_names (function_names) with weight (number of transaction between given user and contract ith buckling) (IN PROGRESS)
-# TODO: Add the time stamp as edge feature, and contract code as node feature, train the GCN (TO DO)
-# TODO: Instead of GCN let's use the Graphormer structure and train with the same graph representation as GCN (Node and edge features) (TO DO)
-# TODO: Create the graph representation with weighted edges for user-contracts transactions (IN PROGRESS)
-
-
-# TODO: Find the paper in which demonstrate recommending by news name is much more effective than news body embedding
-# TODO: Add another tagging approach and run CF as a new baseline: search for established category top-5 keyword and assign the most similar category to each contract
-
-
-# Question: should we keep user-user edges in our transaction graph too?
-
 
 
 Popular contract recommender results: (Outdated)
@@ -90,15 +77,6 @@ MAP @ 5: 0.8082292432035263
 
 For len(user_topic_interactions) = 100K
 
-
-# Popular Contract Recommender (After fixed the prev bug)
-For len(user-item-rating) = 100k
-MAP @ 1: 0.05108991825613079
-MAP @ 5: 0.07756893985265907
-MAP @ 10: 0.09126641274887184
-MAP @ 15: 0.09552536905142488
-MAP @ 20: 0.09744209517667898
-
 # Name Level MF Recommender surprise V2:
 For len() = 10k
 MAP @ 1: 0.06540084388185655
@@ -134,14 +112,52 @@ MAP @ 20: 0.06229326813653393
 
 Note: as we can see the MAP will reduce when k grows, this may be because of number of topic we had for LDA
 
+# Popular Contract Recommender (After fixed the prev bug)
+For len(user-item-rating) = 100k
+MAP @ 1: 0.05108991825613079
+MAP @ 5: 0.07756893985265907
+MAP @ 10: 0.09126641274887184
+MAP @ 15: 0.09552536905142488
+MAP @ 20: 0.09744209517667898
+
+for len() = all, and change the denominator to k
+MAP @ 5: 0.02023273879808665
+MAP @ 1: 0.05086694425455223
+MAP @ 2: 0.037140326890808525
+MAP @ 3: 0.028281855281419754
+MAP @ 4: 0.02350110310111264
+
 ## name-level mf with lighttbf:
 Testset (just kept users with more than 5 unique interactions)
+Not passing the trainset to precision_k method (Note: in line 1303 of lightfm predict_ranks cython implementaiton, if we pass the trainset, it will skip testset_items that was in trainset, in other words just predicting the interaction score if the item is new to user and skip the items that user has iteracted with before)
 Precision at k=1: 0.10146462917327881
 Precision at k=2: 0.09653647989034653
 Precision at k=3: 0.0896432027220726
 Precision at k=4: 0.08510270714759827
 Precision at k=5: 0.08069270104169846
 Precision at k=10: 0.06327376514673233
+
+Passing trainset to percision_k:
+Precision at k=1: 0.17414332926273346
+Precision at k=2: 0.14961771667003632
+Precision at k=3: 0.13255344331264496
+Precision at k=4: 0.11918524652719498
+Precision at k=5: 0.10929439961910248
+
+## MovieLens mf with lighttbf:
+Not passing the trainset to precision_k method:
+Precision at k=1: 0.11346765607595444
+Precision at k=2: 0.10286320000886917
+Precision at k=3: 0.10533756762742996
+Precision at k=4: 0.1036585345864296
+Precision at k=5: 0.1056203693151474
+
+Passing trainset to percision_k:
+Precision at k=1: 0.3722163438796997
+Precision at k=2: 0.33616119623184204
+Precision at k=3: 0.30364084243774414
+Precision at k=4: 0.27757158875465393
+Precision at k=5: 0.2557794451713562
 
 ## contract level mf with lightbf:
 Testset (just kept users with more than 5 unique interactions)
@@ -150,3 +166,25 @@ Average Precision at 2: 0.09803513751590487
 Average Precision at 3: 0.09091873022091086
 Average Precision at 4: 0.08391957032399772
 Average Precision at 5: 0.07767984731335678
+
+
+################################################################################################################
+# Graph Recommender
+
+TODO: Train simple GCN given node_names (user address or contract_names) and edge_names (function_names) with weight (number of transaction between given user and contract ith buckling) (IN PROGRESS)
+
+TODO: Add the time stamp as edge feature, and contract code as node feature, train the GCN (TO DO)
+
+TODO: Instead of GCN let's use the Graphormer structure and train with the same graph representation as GCN (Node and edge features) (TO DO)
+
+TODO: Create the graph representation with weighted edges for user-contracts transactions (IN PROGRESS)
+
+TODO: Find the paper in which demonstrate recommending by news name is much more effective than news body embedding
+
+TODO: Add another tagging approach and run CF as a new baseline: search for established category top-5 keyword and assign the most similar category to each contract
+
+Question: should we keep user-user edges in our transaction graph too?
+
+Just load the user-contract-interactions, ignore the user-user interactions in user_transactions:
+now nodes are contract and users and edges just can exist between user anc contracts.
+Node features: address, code |||| edge features: timestamp, function naem (and input), 

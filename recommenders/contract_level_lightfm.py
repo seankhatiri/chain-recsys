@@ -8,7 +8,6 @@ from scipy.sparse import csr_matrix
 user_topic_df = pd.read_parquet("dataset/user_topic_rating.parquet")
 user_item_df = pd.read_parquet("dataset/user_contract_rating.parquet")
 # user_topic_df = user_topic_df.groupby('user').filter(lambda x: len(x) > 5) #didn't test with this line for all data
-# user_item_df = user_item_df.groupby('user').filter(lambda x: len(x) > 5)
 contract_to_topic_df = pd.read_parquet("dataset/contract_name_topic.parquet")
 # user_topic_df = user_topic_df[:10000]
 # user_item_df = user_item_df[:10000]
@@ -90,6 +89,7 @@ total_users = 0
 K_values = [1, 2, 3, 4, 5]  # Change this to the value of K you are interested in
 
 for K in K_values:
+    #TODO: How to skip contracts that user had interaction with in trainset to calculate percision when predicting score for new contracts?
     for user, topic_value in best_recommendations.items():
         recommended_contracts = topic_contract_dict_testset[topic_value][:K] if topic_value in topic_contract_dict_testset.keys() else topic_contract_dict_fullset[topic_value][:K]
         actual_contracts = name_test_df[name_test_df['user'] == user]['item'].tolist()  # Get actual contracts for the user from the test set

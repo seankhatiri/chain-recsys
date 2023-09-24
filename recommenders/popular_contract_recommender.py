@@ -17,7 +17,7 @@ data = data[data['item'] != '']
 # filtered_data = data.groupby('item').filter(lambda x: len(x) > 0) # This removes diverse contracts with low interactions
 
 filtered_data = data.groupby('user').filter(lambda x: len(x) > 5) # This keeps the user with diverse set of contract interactions
-data = filtered_data[:10000]
+# data = filtered_data[:10000]
 
 ###### DATA PREPROCESSING #######
 def apply_rating_scale(rating):
@@ -53,7 +53,7 @@ def MAP_at_K_PCR(testset=None, K=None, trainset=None):
                 hits += 1
                 precision_at_k = hits / k
                 sum_precisions += precision_at_k
-        average_precision = sum_precisions / min(len(true_items), K)
+        average_precision = sum_precisions / K #min(len(true_items), K)
 
         # MAP@K V2
         # item_at_k = predicted_items
@@ -94,7 +94,7 @@ def PCR_split(dataset):
     
     return train_data, test_data
 
-K_values = [1, 5, 10, 15, 20]
+K_values = [1, 2, 3, 4, 5]
 trainset, testset = PCR_split(data)
 
 with ThreadPoolExecutor() as executor:
