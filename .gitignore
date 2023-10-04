@@ -5,4 +5,6 @@
 *.csv
 /temp_tx
 /contract_parser
+/data 
+/models
 

@@ -185,6 +185,16 @@ TODO: Add another tagging approach and run CF as a new baseline: search for esta
 
 Question: should we keep user-user edges in our transaction graph too?
 
-Just load the user-contract-interactions, ignore the user-user interactions in user_transactions:
+Just load the user-contract-interactions, ignore the user-user interactions in user_transactions. In other words we are ignoring the social relationship, but one level of ablation can be these social relationships (basically it enhances user representation).
 now nodes are contract and users and edges just can exist between user anc contracts.
 Node features: address, code |||| edge features: timestamp, function naem (and input), 
+
+
+
+
+
+
+Goal: FInish the first draft by mid Oct. 
+To do so: Find a decent way to evaluate the GNN model (the current one is supr slow and very low AP@K). Maybe first test Movielens dataa and compare the AP@k.
+Then run the user/item CSP eval, then run the diversity eval of models. Then write the result section of experiment chapter. Then write the summery section of conclusion, then rewrite the future work. At the end rewrite the previous sections (remove hard words and check the correctness). Finally add the blank citation and increase number of them.
+
