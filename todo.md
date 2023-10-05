@@ -191,10 +191,183 @@ Node features: address, code |||| edge features: timestamp, function naem (and i
 
 
 
+GNN model result for f=1 (f is the number of top_keywords we considered as part of contract_feat):
+
+Epoch: 001, Loss: 0.3561
+Epoch: 002, Loss: 0.2615
+Epoch: 003, Loss: 0.2268
+Epoch: 004, Loss: 0.2014
+Epoch: 005, Loss: 0.1817
+
+AP@1: 0.5978497312164021
+AP@2: 0.4682710338792349
+AP@3: 0.376030337125474
+AP@4: 0.30758219777472184
+AP@5: 0.25652873275826144
+
+for f = 5
+Epoch: 001, Loss: 0.3390
+Epoch: 002, Loss: 0.2384
+Epoch: 003, Loss: 0.2038
+Epoch: 004, Loss: 0.1818
+Epoch: 005, Loss: 0.1648
+
+AP@1: 0.6026836687919324
+AP@2: 0.47208401050131266
+AP@3: 0.37796391215568614
+AP@4: 0.3098449806225778
+AP@5: 0.2584489727882653
+
+for f = 150
+Epoch: 001, Loss: 0.3278
+Epoch: 002, Loss: 0.2341
+Epoch: 003, Loss: 0.2014
+Epoch: 004, Loss: 0.1793
+Epoch: 005, Loss: 0.1656
+
+AP@1: 0.5984331374755177
+AP@2: 0.4709130307955161
+AP@3: 0.37887513716992405
+AP@4: 0.3106242446972538
+AP@5: 0.25916572904946455
+
+Runing the GNN for movieLens100k:
+Epoch: 001, Loss: 0.4408
+Epoch: 002, Loss: 0.3486
+Epoch: 003, Loss: 0.3267
+Epoch: 004, Loss: 0.3105
+Epoch: 005, Loss: 0.3008
+
+AP@1: 0.8058778802605044
+AP@2: 0.7927865383979635
+AP@3: 0.7640032177372255
+AP@4: 0.7404129062117756
+AP@5: 0.7144434526761215
+
+Running LightFm with GNN neg_sample eval for MovieLens100k:
+AP@1: 0.9713679745493107
+AP@2: 0.9644750795334041
+AP@3: 0.9494521032166843
+AP@4: 0.9318663838812301
+AP@5: 0.9117709437963945
+
+LighFm with lighfm Precision_at_k eval with just having users with >10 interactions:
+Precision at k=1: 0.11810652166604996
+Precision at k=2: 0.10770318657159805
+Precision at k=3: 0.09884855896234512
+Precision at k=4: 0.089724600315094
+Precision at k=5: 0.08322671800851822
+
+Ablation study result: (given f = 150, contract_feat.shape = num_of_contracts, all_unique_keywords, we put zero for all)
+Epoch: 001, Loss: 0.3655
+Epoch: 002, Loss: 0.2729
+Epoch: 003, Loss: 0.2364
+Epoch: 004, Loss: 0.2093
+Epoch: 005, Loss: 0.1902
+Validation AUC: 0.9574
+
+AP@1: 0.5992165687377589
+AP@2: 0.46865024794766014
+AP@3: 0.37563584336931
+AP@4: 0.30736342042755344
+AP@5: 0.25676709588698593
+
+
+Abblation study (remove movie_feat from MovieLens GNN model):
+Epoch: 001, Loss: 0.4429
+Epoch: 002, Loss: 0.3515
+Epoch: 003, Loss: 0.3276
+Epoch: 004, Loss: 0.3147
+Epoch: 005, Loss: 0.2983
+
+AP@1: 0.7851499223114814
+AP@2: 0.7704717511322688
+AP@3: 0.7300296428532072
+AP@4: 0.6998991702205032
+AP@5: 0.6747528843928724
+
+
+The MF model running in tmux: the GNN eval for lightfm model on contract dataset (we don't need it)
+AP@1: 0.8118550368550369
+AP@2: 0.6658323095823095
+AP@3: 0.5612612612612613
+AP@4: 0.48083538083538085
+AP@5: 0.41711916461916465
+
+Oct4: a summary of today:
+First we updated the MF recommender eval (to be comparable to GNN). 
+Then we generalized the GNN model architecture we had for the user_contract dataset. To do so:
+1. we created contract df which has, itemId, contract_name, and contract_top_keywords
+
+for contract top_keywords, we fit a TFIDF on contracts comments to get their n top keywords, then create a tensor with (len(contracts), len(unqiue_keywords in contracts_top_keywords))
+
+2. We trained the GNN model both for movieLens and contract dataset. our observation:
+- For both the performance of GNN model was lower than the matrix factorization with the comparable eval
+- MovieLens GNN model was closer to its MF counterpart rather than the contract dataset
+- When removed the contract_feat (by putting zero for all contracts along the dimenssion) the performance didn't changed drastically which determine the contract_feat dosn't have valuable information for the recommendation task (binary link prediction)
+
+hard decision: do we accept that contracts dosn't have additional information? if yes we need to update the contract_level MF eval to have the comparable eval to name_level and GNN neg_sample eval
+
+
+Oct5:
+We made the universal eval for both name-leve MF and GNN. 
+For Contracts:
+GNN:
+AP@1: 0.5986248281035129
+AP@2: 0.46705838229778723
+AP@3: 0.37348279646066873
+AP@4: 0.3057444680585073
+AP@5: 0.2549235321081802
+
+MF:
+AP@1: 0.5163062049422844
+AP@2: 0.37505938242280285
+AP@3: 0.28580517009070583
+AP@4: 0.22717839729966247
+AP@5: 0.18663999666624997
+
+For MovieLens:
+GNN:
+AP@1: 0.7718271678402592
+AP@2: 0.7664220304803464
+AP@3: 0.7477161779452763
+AP@4: 0.7173542927038911
+AP@5: 0.6859268074977686
+Observation: I changed the epoch to as high as 20, the more I increased the epoch (up to 10) the model eval was better, so the model dose not overfit. after 10 the loss just changed .01 for each epoch and eval didn't changed (hit@k). Best Result:
+AP@1: 0.8047869351052928
+AP@2: 0.7768686568151013
+AP@3: 0.7456885627073071
+AP@4: 0.7220403980296869
+AP@5: 0.6954081126648816
+
+MF:
+AP@1: 0.3861615260008595
+AP@2: 0.3345399847928857
+AP@3: 0.2895412520524095
+AP@4: 0.24752884392872493
+AP@5: 0.21366656748983437
+
+
+GNN For MovieLens
+with movie_feat:
+AP@1: 0.7718271678402592
+AP@2: 0.7664220304803464
+AP@3: 0.7477161779452763
+AP@4: 0.7173542927038911
+AP@5: 0.6859268074977686
+
+without movie_feat:
+AP@1: 0.8273661939237661
+AP@2: 0.7891004661311117
+AP@3: 0.7662512259358436
+AP@4: 0.7393467552646369
+AP@5: 0.7137029323283415
 
 
 
-Goal: FInish the first draft by mid Oct. 
-To do so: Find a decent way to evaluate the GNN model (the current one is supr slow and very low AP@K). Maybe first test Movielens dataa and compare the AP@k.
-Then run the user/item CSP eval, then run the diversity eval of models. Then write the result section of experiment chapter. Then write the summery section of conclusion, then rewrite the future work. At the end rewrite the previous sections (remove hard words and check the correctness). Finally add the blank citation and increase number of them.
+Challange: why without movie_feat the results are better?
+one problem can be the num of edge_label_index in val_loader is > train_loader: I think in train_loader we just have the positive edges, but in val_loader we have negative edges.
+len(val_loader.edge_label) = 
+len(train_loader.edge_label) = 
+neg_sample_ratio = 2
 
