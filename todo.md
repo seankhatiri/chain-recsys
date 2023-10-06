@@ -371,3 +371,35 @@ len(val_loader.edge_label) =
 len(train_loader.edge_label) = 
 neg_sample_ratio = 2
 
+
+Oct5 mid night: There was a bug in item_feat for MovieLens, actually the movie_feat tensor order was not compatible with the item_ids. The itsm_ids was mapped_id but the movie_feat was the original movie_id-1 in movies_df. After fixing the bug:
+GNN For MovieLens
+with movie_feat:
+AP@1: 0.8493503917484876
+AP@2: 0.8143574994214685
+AP@3: 0.7811387704276724
+AP@4: 0.7461816919567589
+AP@5: 0.7131541538563257
+
+without movie_feat:
+AP@1: 0.8370524645442825
+AP@2: 0.8039274025587623
+AP@3: 0.7712321068465073
+AP@4: 0.7382558101094251
+AP@5: 0.713154153856326
+
+GNN for contracts
+with contract_feat:
+AP@1: 0.5986248281035129
+AP@2: 0.46705838229778723
+AP@3: 0.37348279646066873
+AP@4: 0.3057444680585073
+AP@5: 0.2549235321081802
+
+
+without contract_feat:
+AP@1: 0.5837146309955411
+AP@2: 0.4531566445805726
+AP@3: 0.36130349627036706
+AP@4: 0.295380672584073
+AP@5: 0.24670750510480477
