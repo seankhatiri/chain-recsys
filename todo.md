@@ -403,3 +403,7 @@ AP@2: 0.4531566445805726
 AP@3: 0.36130349627036706
 AP@4: 0.295380672584073
 AP@5: 0.24670750510480477
+
+Note: the reason why the train_loader_df len is less than val_loader_df: we have ~100k interactions. The reason is 30% of edges are used for supervision, we have 80k total train_egde, 0.3*80k=24k for supervision and 0.7*80k=56k for msg passing. Also we have 10k val_edges (positive) and with neg_ratio=2 we'll have 20k neg_edges in val_data and we create the neg samples during the training. ALso there is not any intersection between train and val which makes it transductive link prediction meaning during training model didn't see the positive edges. 
+
+TODO: make the val_ratio=0 and just have test_data_ratio (=0.2)
