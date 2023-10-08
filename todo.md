@@ -406,4 +406,42 @@ AP@5: 0.24670750510480477
 
 Note: the reason why the train_loader_df len is less than val_loader_df: we have ~100k interactions. The reason is 30% of edges are used for supervision, we have 80k total train_egde, 0.3*80k=24k for supervision and 0.7*80k=56k for msg passing. Also we have 10k val_edges (positive) and with neg_ratio=2 we'll have 20k neg_edges in val_data and we create the neg samples during the training. ALso there is not any intersection between train and val which makes it transductive link prediction meaning during training model didn't see the positive edges. 
 
-TODO: make the val_ratio=0 and just have test_data_ratio (=0.2)
+Note: the egde_index in tes_data is 80% of all egdes, so I guess it's train_edges, so the edge_labels_index is the true test edges, keep in mind
+
+Oct 7: We modified the way we get out prediction from GNN. The main intention was to be able to have hit@k eval. Todo so we need the prediction, given a user_id, for all possible items, then rerank and return the top_k. After doing so and updating the NMF and CMF alongside the GNN model and the Hit@k eval we had these results:
+''' GNN contract
+AP@1: 0.04191263282172373 -> .41
+AP@5: 0.030342384887839437 -> .30
+'''
+
+''' NMF contract
+AP@1: 0.03571428571428571 -> .35
+AP@5: 0.024321133412042506 -> .24
+'''
+
+''' GNN MovieLens
+AP@1: 0.0755336617405583
+AP@5: 0.06371100164203612
+'''
+
+''' NMF MovieLens
+AP@1: 0.07635467980295567
+AP@5: 0.06962233169129721
+'''
+
+For movieLens we didn't even slice the test_data, since the unique number of users and items are limited (609, 5099), so we calculate the model predictions for all possible pairs (609*5099). However, as we can see the GNN does not show any better performance here. WHY? let's increase the slice_rate from .1 to .4 for contracts:
+
+''' GNN contract
+AP@1: 0.059756627553237726
+AP@5: 0.04050412863972186
+'''
+
+''' NMF contract
+AP@1: 0.04758800521512386
+AP@5: 0.03489787049109083
+'''
+As we can see:
+
+Next_step: for movie_lens increase the epoch from 6 to 10:
+
+TODO: refactor code to run different models (GNN, NMF, CMF) easier. Fix CMF bug.
