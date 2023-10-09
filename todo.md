@@ -506,7 +506,7 @@ AP@5:
 Note: we changed the denominator of hit@k from k to min(num_ones, k). the num_ones is the num of positive interactions in ground_truth. It is basically the total number of user actual interaction in testset. Now both hit@k and NDCG@k will grow proportional to k.
 
 TODO: 
-Add MAP@k eval
+
 Add diversity expermient
 Add contract sBERT representation and rerun GNN with new item_feat
 Add sparcity experiment 
