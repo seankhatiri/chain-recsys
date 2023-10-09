@@ -444,4 +444,72 @@ As we can see:
 
 Next_step: for movie_lens increase the epoch from 6 to 10:
 
-TODO: refactor code to run different models (GNN, NMF, CMF) easier. Fix CMF bug.
+
+
+Oct 8: 
+Note: For MF models,we cannot give model a u_id and get the top_k items, instead we have (u_id, i_id) pairs (can be neg or pos). We fed the model and get the pred for each pair, then rank based on pred and see in top_k how many ground_truth == 1 we contain. so basically we don't need items in the last step, just see the ground_truth column.
+After fixing the CMF model:
+'''
+(in prev results did we fed interactions or all of them?) 
+CMF contract: 100k interactions, slice_rate=0.1
+AP@1: 0.07765263781861292
+AP@5: 0.015530527563722585
+'''
+'''
+NMF contract: 100k interactions, slice_rate=0.1
+AP@1: 0.024734982332155476
+AP@5: 0.018138987043580686
+'''
+'''
+CMF contract: 100k interactions, slice_rate=0.5
+AP@1: 0.06323585263957462
+AP@5: 0.012647170527914925
+'''
+NMF contract: 100k interactions, slice_rate=0.5
+AP@1: 0.03589061906570452
+AP@5: 0.02939612609191037
+'''
+
+Then we fixed the CSP bug and run the CSP-user and CSP-item experiments (note that slice_rate for csp is 1):
+'''
+UCSP, GNN, contract (100k interactions)
+AP@1: 0.16943042537851477
+AP@5: 0.09891852919971161
+'''
+'''
+UCSP, NMF, contract (100k interactions)
+AP@1: 0.10093727469358327
+AP@5: 0.07238644556596972
+'''
+'''
+UCSP, CMF, contract (100k interactions)
+AP@1: 0.0
+AP@5: 0.0
+'''
+############
+'''
+ICSP, GNN, contract (100k interactions)
+AP@1:
+AP@5:
+'''
+'''
+ICSP, NMF, contract (100k interactions)
+AP@1:
+AP@5:
+'''
+'''
+ICSP, CMF, contract (100k interactions)
+AP@1:
+AP@5:
+'''
+
+
+TODO: 
+
+Add other metrics (NDCG)
+Add diversity expermient
+Add contract sBERT representation and rerun GNN with new item_feat
+Add sparcity experiment 
+Add social Relationship to edge_label_indexes (train and test)
+refactor code to run different models (GNN, NMF, CMF) easier
+
