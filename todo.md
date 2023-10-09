@@ -503,10 +503,10 @@ AP@1:
 AP@5:
 '''
 
+Note: we changed the denominator of hit@k from k to num of positive interactions in ground_truth (num_ones) which is basically the total number of user actual interaction in testset. Now both hit@k and NDCG@k will grow based on k
 
 TODO: 
 
-Add other metrics (NDCG)
 Add diversity expermient
 Add contract sBERT representation and rerun GNN with new item_feat
 Add sparcity experiment 
