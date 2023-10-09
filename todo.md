@@ -505,9 +505,28 @@ AP@5:
 
 Note: we changed the denominator of hit@k from k to min(num_ones, k). the num_ones is the num of positive interactions in ground_truth. It is basically the total number of user actual interaction in testset. Now both hit@k and NDCG@k will grow proportional to k.
 
-TODO: 
-Add contract sBERT representation and rerun GNN with new item_feat
 
+Oct 9: added sBERT as contract representation experiment.
+
+For 2k contract interaction data:
+''' TFIDF
+HIT@1: 0.05625
+HIT@5: 0.07854166666666666
+NDCG@1: 0.05625
+NDCG@5: 0.06638135940822126
+MAP@1: 0.05625
+MAP@5: 0.07510416666666667
+'''
+''' sBERT
+HIT@1: 0.04
+HIT@5: 0.15033333333333335
+NDCG@1: 0.04
+NDCG@5: 0.09938733033336235
+MAP@1: 0.04
+MAP@5: 0.10577777777777778
+'''
+
+TODO: 
 Add social Relationship to edge_label_indexes (train and test)
 
 
