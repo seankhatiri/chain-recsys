@@ -526,7 +526,7 @@ MAP@1: 0.04
 MAP@5: 0.10577777777777778
 '''
 
-TODO: 
-Add social Relationship to edge_label_indexes (train and test)
+we replaced the senternce-transformers library with transformers since the first package had some conflict with torch==1.13.1 and tested the sBERT embedding as item_feat with the new package. Then added the social edges to the edge_index tensor. to do so we shifted the item mappedID by the len(edge_label_index[0].unique()). Then shifted the item_ids and item_feat ids as same as the previous one. With this trick we could add (user, user) pair as edges since users and items after the previous shifting change has different unique ids. In test time, when wanna create the all2all possible edges between user and items, since all_items now contain both users and items, we skip the item_ids < len(edge_label_index[0].unique()). Since the user ids are before item ids in all_items, we don't consider them. However, when creaing the test and train data, we contain some (user, user) edges in test data edge_index. Therefore though we don't add any new user, user edges to all2all edges, but the test_data edge_index contain some social_edges. If the model dose not work well, we should remove these social edges completely from test_data edge_index.
+
 
 
