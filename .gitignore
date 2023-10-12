@@ -7,4 +7,4 @@
 /contract_parser
 /data 
 /models
-
+*.npy
