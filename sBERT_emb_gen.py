@@ -4,8 +4,9 @@ import torch
 import re
 import pandas as pd
 import numpy as np
+from tqdm import tqdm
 
-def get_item_feat_sbert(items_df, save_path='item_embeddings.npy'):
+def get_item_feat_sbert(items_df, save_path='sbert_embeddings_full.npy'):
     contract2comments = pd.read_parquet('dataset/contracts2comment.parquet')
     c2c_main_class = contract2comments[contract2comments['contract_name'] == contract2comments['class_name']]
 
@@ -27,7 +28,7 @@ def get_item_feat_sbert(items_df, save_path='item_embeddings.npy'):
         return text
 
     sentences = []
-    for i, item in items_df.iterrows():
+    for i, item in tqdm(items_df.iterrows(), total=len(items_df)):
         comment_class = c2c_main_class[c2c_main_class['contract_name'] == item['name']]
         if not comment_class.empty and comment_class['class_documentation'].iloc[0] != '':
             sentences.append(comment_class['class_documentation'].iloc[0])
@@ -48,7 +49,7 @@ def get_item_feat_sbert(items_df, save_path='item_embeddings.npy'):
     return item_feat
 
 items_ratings_df = pd.read_parquet('dataset/user_contract_rating.parquet')
-items_ratings_df = items_ratings_df[:100000]
+items_ratings_df = items_ratings_df #[:100000]
 items_df = {}
 items_df['name'] = items_ratings_df['item'].unique()
 items_df['itemId'], unique_names = pd.factorize(items_df['name'])
