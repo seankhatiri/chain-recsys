@@ -1491,3 +1491,7 @@ Future TODO:
 
 1. For sparsity exp, move the user/item > u/i interactions selector inside data_loader. Then you can have all items for usparsity and all users for isparsity
 2. For MF models we should fed the original edge_index without social_edges, and original node ids -> need refactor, or we can do the sparcity exp with GNN_without_social since there was not much difference
+
+Note: When we use Tranform from pyg to split the data into the train and test with neg_sample_ratio=n > 0, it generally first add n negative edges given each positive edges in all data. then if the neg_sample_in_trai=False, it just add the neg edges to the testset leading to a more diverse unique users in test set. For instance if n=2 among 100k edges and 80/20 split rtion we will have 20k(pos)+40k(neg) in testset instead of 20k. One better approach is to have n=0 when using Transform and then manually add f negative edges given each unique user in testset.
+
+Note: if we add the neg edges based on each unique user, when we have ucsp, since number of unique users drastically decreases in test time, the number of neg samples will be lower and model will perform better. therefore, we need a sterategy to have same number of neg samples. maybe adding n times of total test_edges as negative edge.
