@@ -8,3 +8,6 @@
 /data 
 /models
 *.npy
+ml-1m
+*.zip
+*.txt

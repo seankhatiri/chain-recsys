@@ -2033,7 +2033,7 @@ MAP@10: 0.6955234627457888
 MAP@15: 0.6757829533383125
 MAP@20: 0.6614590211980846
 since the tfidf is as good as sbert I think the problem is dim=8k in tfidf, so one way is to pick smaller number of top-words (instead of 150) and rerun just Hybrid_GNN_tfidf
-- Add cross-fold
-- Compare the best performing model Hybrid_GNN once with blockchain data and then with MovieLens
 
-- Update diversity exp
+- Compare the best performing model Hybrid_GNN once with blockchain data and then with MovieLens
+- Just run the tfidf again with the new tfidf_embeddings_100k_dim_1400.npy
+- FUTURE_ Update diversity exp
